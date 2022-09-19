@@ -5,36 +5,36 @@ class Saver():
         self.fileName = fileName
     
     def read(self, field):
-        with open(self.fileName + '.sc', 'r') as f:
+        with open(self.fileName + '.sc', 'r', encoding='utf-8') as f:
             lines = f.readlines()
             for line in lines:
-                try:
-                    line.split(' = ')[1]
-                    
-                    fieldName = line.split(' = ')[0]
-                    fieldMeaning = line.split(' = ')[1]
+                if line[0] != '#':
+                    try:
+                        line.split(' = ')[1]
+                        
+                        fieldName = line.split(' = ')[0]
+                        fieldMeaning = line.split(' = ')[1]
 
-                    if field == str(fieldName):
-                        return ''.join(fieldMeaning.split('\n'))
+                        if field == str(fieldName):
+                            return ''.join(fieldMeaning.split('\n'))
 
-                except IndexError:
-                    print(f'InvalidSyntax: use field = meaning\non {self.fileName}.sc, {lines.index(line) + 1}')
+                    except IndexError:
+                        print(f'InvalidSyntax: use field = meaning\non {self.fileName}.sc, {lines.index(line) + 1}')
 
     def write(self, field, meaning):
-        with open(self.fileName + '.sc', 'r') as f:
+        with open(self.fileName + '.sc', 'r', encoding='utf-8') as f:
             lines = f.readlines()
 
             for line in lines:
-                fieldName = line.split(' = ')[0]
-                
-                if fieldName == field:
-                    lines[lines.index(line)] = f'{field} = {meaning}\n'
+                if line[0] != '#':
+                    fieldName = line.split(' = ')[0]
                     
-                    with open(self.fileName + '.sc', 'w') as f:
-                        print('фав')
-                        f.write(''.join(lines))
-                        return
-            with open(self.fileName + '.sc', 'w') as f:
+                    if fieldName == field:
+                        lines[lines.index(line)] = f'{field} = {meaning}\n'
+                        
+                        with open(self.fileName + '.sc', 'w', encoding='utf-8') as f:
+                            f.write(''.join(lines))
+                            return
+            with open(self.fileName + '.sc', 'w', encoding='utf-8') as f:
                 lines.append(f'{field} = {meaning}\n')
-                print('фав1')
                 f.write(''.join(lines))
